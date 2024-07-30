@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* index.css */
+
+.timer-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: inline-block;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.progress-ring__circle {
+    transition: stroke-dashoffset 1s linear;
+}
+
+.bg-darker {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Adjust the RGBA values as needed */
+}
