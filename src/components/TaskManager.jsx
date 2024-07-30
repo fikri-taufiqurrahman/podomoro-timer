@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
@@ -6,6 +6,20 @@ const TaskManager = () => {
   const [tasks, setTasks] = useState([]);
   const [finishedTasks, setFinishedTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+
+  useEffect(() => {
+    // Load tasks from local storage when the component mounts
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const storedFinishedTasks =
+      JSON.parse(localStorage.getItem("finishedTasks")) || [];
+    setTasks(storedTasks);
+    setFinishedTasks(storedFinishedTasks);
+  }, []);
+
+  const saveTasksToLocalStorage = (tasks, finishedTasks) => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("finishedTasks", JSON.stringify(finishedTasks));
+  };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -47,19 +61,26 @@ const TaskManager = () => {
         setFinishedTasks(updatedFinishedTasks);
       }
     }
+
+    saveTasksToLocalStorage(updatedTasks, updatedFinishedTasks);
   };
 
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
       const newTaskObj = { id: `task-${tasks.length + 1}`, content: newTask };
-      setTasks([...tasks, newTaskObj]);
+      const updatedTasks = [...tasks, newTaskObj];
+      setTasks(updatedTasks);
       setNewTask("");
+      saveTasksToLocalStorage(updatedTasks, finishedTasks);
     }
   };
 
   const handleDeleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-    setFinishedTasks(finishedTasks.filter((task) => task.id !== id));
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    const updatedFinishedTasks = finishedTasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+    setFinishedTasks(updatedFinishedTasks);
+    saveTasksToLocalStorage(updatedTasks, updatedFinishedTasks);
   };
 
   return (
@@ -93,7 +114,7 @@ const TaskManager = () => {
                 <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(provided) => (
                     <div
-                      className="p-2 mb-2 bg-inherit border-b-2 rounded flex justify-between items-center "
+                      className="p-2 mb-2 bg-inherit border-b-2 rounded flex justify-between items-center"
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}

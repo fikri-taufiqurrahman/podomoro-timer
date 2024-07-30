@@ -48,7 +48,6 @@ const PomodoroTimer = ({ onSessionChange }) => {
         onSessionChange(false); // Inform parent component of session change
         showNotification("Break Session Started", {
           body: "Time for a break! Enjoy your rest.",
-          icon: "break_icon_url", // URL icon for break session
         });
       } else {
         setTime(selectedOption.work);
@@ -56,7 +55,6 @@ const PomodoroTimer = ({ onSessionChange }) => {
         onSessionChange(true); // Inform parent component of session change
         showNotification("Focus Session Started", {
           body: "Back to work! Stay focused.",
-          icon: "work_icon_url", // URL icon for focus session
         });
       }
     }
