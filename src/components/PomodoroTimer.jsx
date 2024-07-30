@@ -115,7 +115,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
 
   return (
     <div className="pomodoro-timer p-4 text-center">
-      <h1 className="text-2xl font-bold mb-4">Pomodoro Timer</h1>
+      <h1 className="text-2xl font-bold my-4">Fikri's Pomodoro Timer</h1>
       <div className="timer-wrapper relative inline-block">
         <svg className="progress-ring" height="220" width="220">
           <circle
