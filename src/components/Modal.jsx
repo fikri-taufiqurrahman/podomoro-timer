@@ -3,7 +3,7 @@ import React from "react";
 import {
   FaCheck,
   FaTimes,
-  FaWater,
+  FaCoffee,
   FaBan,
   FaLaptop,
   FaBullseye,
@@ -23,7 +23,7 @@ const Modal = ({ isVisible, onClose, onConfirm }) => {
         </p>
         <ul className="list-disc text-start list-inside mb-4 ml-2">
           <li className="flex items-center">
-            <FaWater className="mr-2" /> Prepare a bottle of water
+            <FaCoffee className="mr-2" /> Prepare a cup or bottle of water
           </li>
           <li className="flex items-center">
             <FaBan className="mr-2" /> Eliminate distractions

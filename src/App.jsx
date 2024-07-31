@@ -16,7 +16,7 @@ const App = () => {
       className={`min-h-screen text-white transition-colors duration-1000 ${
         isWorkSession
           ? "bg-gradient-to-r from-teal-500 to-teal-900"
-          : "bg-gradient-to-r from-blue-300 to-blue-400"
+          : "bg-gradient-to-r from-blue-400 to-blue-500"
       }`}
     >
       <PomodoroTimer onSessionChange={handleSessionChange} />

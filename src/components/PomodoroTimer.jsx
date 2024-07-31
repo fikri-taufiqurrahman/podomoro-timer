@@ -11,6 +11,7 @@ import {
 const PomodoroTimer = ({ onSessionChange }) => {
   const [time, setTime] = useState(1500);
   const [isActive, setIsActive] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
     work: 1500,
     break: 900,
@@ -20,20 +21,26 @@ const PomodoroTimer = ({ onSessionChange }) => {
   const [activeButton, setActiveButton] = useState("short");
 
   useEffect(() => {
-    if (!("Notification" in window)) {
-      console.log("Browser does not support desktop notifications");
-    } else {
-      Notification.requestPermission().then((permission) => {
-        if (permission !== "granted") {
-          alert("Notification permission is required for this feature.");
-        }
-      });
-    }
+    const notificationDelay = setTimeout(() => {
+      if (!("Notification" in window)) {
+        console.log("Browser does not support desktop notifications");
+      } else {
+        Notification.requestPermission().then((permission) => {
+          if (permission !== "granted") {
+            alert(
+              "Notification permission is required for better experience ✨"
+            );
+          }
+        });
+      }
+    }, 1000);
+
+    return () => clearTimeout(notificationDelay); // Bersihkan timeout jika komponen di-unmount
   }, []);
 
   useEffect(() => {
     let interval = null;
-    if (isActive) {
+    if (isActive && !isPaused) {
       interval = setInterval(() => {
         setTime((time) => (time > 0 ? time - 1 : 0));
       }, 1000);
@@ -59,12 +66,19 @@ const PomodoroTimer = ({ onSessionChange }) => {
       }
     }
     return () => clearInterval(interval);
-  }, [isActive, time, isWorkSession, selectedOption, onSessionChange]);
+  }, [
+    isActive,
+    isPaused,
+    time,
+    isWorkSession,
+    selectedOption,
+    onSessionChange,
+  ]);
 
   useEffect(() => {
     document.title = isWorkSession
-      ? `Focus Session (${formatTime(time)})`
-      : `Break Session (${formatTime(time)})`;
+      ? `(${formatTime(time)}) - Focus Session`
+      : `(${formatTime(time)}) - Break Session`;
   }, [isWorkSession, time]);
 
   const formatTime = (seconds) => {
@@ -77,7 +91,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
 
   const handleStartPause = () => {
     if (isActive) {
-      setIsActive(false);
+      setIsPaused(!isPaused);
     } else {
       setIsModalVisible(true);
     }
@@ -86,6 +100,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
   const handleConfirmStart = () => {
     setIsModalVisible(false);
     setIsActive(true);
+    setIsPaused(false);
   };
 
   const handleTimeChange = (work, breakTime, buttonName) => {
@@ -93,6 +108,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
     setTime(work);
     setIsWorkSession(true);
     setIsActive(false);
+    setIsPaused(false);
     setActiveButton(buttonName);
   };
 
@@ -139,10 +155,16 @@ const PomodoroTimer = ({ onSessionChange }) => {
       <div className="my-8 flex justify-center">
         <button
           onClick={handleStartPause}
-          className="px-4 py-2 bg-inherit  rounded hover:border-b-2 transition-colors duration-300 mr-2 flex items-center"
+          className="px-4 py-2 bg-inherit rounded hover:border-b-2 transition-colors duration-300 mr-2 flex items-center"
         >
-          {isActive ? <FaPause /> : <FaPlay />}
-          <span className="ml-2">{isActive ? "Pause" : "Start"}</span>
+          {isActive ? isPaused ? <FaPlay /> : <FaPause /> : <FaPlay />}
+          <span className="ml-2">
+            {isActive
+              ? isPaused
+                ? "Resume"
+                : "Pause (For Urgent Situation)"
+              : "Start"}
+          </span>
         </button>
       </div>
 
