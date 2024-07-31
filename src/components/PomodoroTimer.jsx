@@ -148,10 +148,10 @@ const PomodoroTimer = ({ onSessionChange }) => {
 
       {!isActive && (
         <div className="my-2">
-          <div className="flex justify-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-2">
             <button
               onClick={() => handleTimeChange(1500, 900, "short")}
-              className={`px-4 py-2  rounded transition-colors  hover:border-b-2 duration-300 mr-2 flex items-center ${
+              className={`px-4 py-2 rounded transition-colors hover:border-b-2 duration-300 flex items-center ${
                 activeButton === "short" ? "border-2 border-white" : ""
               }`}
             >
@@ -160,7 +160,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
             </button>
             <button
               onClick={() => handleTimeChange(2100, 900, "medium")}
-              className={`px-4 py-2  rounded transition-colors  hover:border-b-2 duration-300 mr-2 flex items-center ${
+              className={`px-4 py-2 rounded transition-colors hover:border-b-2 duration-300 flex items-center ${
                 activeButton === "medium" ? "border-2 border-white" : ""
               }`}
             >
@@ -169,7 +169,7 @@ const PomodoroTimer = ({ onSessionChange }) => {
             </button>
             <button
               onClick={() => handleTimeChange(2700, 900, "long")}
-              className={`px-4 py-2  rounded transition-colors  hover:border-b-2 duration-300 flex items-center ${
+              className={`px-4 py-2 rounded transition-colors hover:border-b-2 duration-300 flex items-center ${
                 activeButton === "long" ? "border-2 border-white" : ""
               }`}
             >
